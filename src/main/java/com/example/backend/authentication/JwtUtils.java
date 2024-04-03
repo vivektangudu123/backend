@@ -18,7 +18,7 @@ public class JwtUtils {
     @Value("hbahbfihjbfdeouhbfhleabdoihbfhabfhuoadvbadhbladkbhjjhbjlabsldbfuwhbfhvbqjhwkdjhdhvgfviuhsbsojnckbcsuhbcudvuhbwabohdbvhdslwhbvchbjc")
     private String secret;
 
-    @Value("1000")
+    @Value("600000")
     private int expirationMs;
 
     public String generateToken(String userDetails) {

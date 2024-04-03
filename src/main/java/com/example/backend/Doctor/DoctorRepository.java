@@ -5,9 +5,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DoctorRepository extends MongoRepository<Doctor, String> {
-    boolean existsByPhoneNumber(String phoneNumber);
-    boolean existsByEmail(String email);
-
-    Doctor findByPhoneNumber(String phoneNumber);
-    Doctor findByDoctorId(String doctorId);
+//    boolean existsByPhoneNumber(String phoneNumber);
+//    boolean existsByEmail(String email);
+//
+//    Doctor findByPhoneNumber(String phoneNumber);
+//    Doctor findByDoctorId(String doctorId);
 }

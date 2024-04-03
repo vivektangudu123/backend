@@ -42,20 +42,21 @@ public class AuthenticationController {
     }
     @CrossOrigin
     @PostMapping("/jwt")
-    public String verify_jwt(@RequestBody send_jwt JWT) {
-        if(JWT.jwt != null)
-        {
-            return "null jwt";
-        }
-        if (!jwtUtils.isTokenExpired(JWT.jwt)) {
-           System.out.println(" expried");
-           return "expired";
-        }
-        String username=jwtUtils.extractUsername(JWT.jwt);
+    public String verify_jwt(@RequestBody String JWT) {
+//        if (!jwtUtils.isTokenExpired(JWT)) {
+//           System.out.println(" expried");
+//           return "expired";
+//        }
+        JWT = JWT.substring(1, JWT.length() - 1);
+        System.out.println(JWT);
+        String username=jwtUtils.extractUsername(JWT);
+
         Patient a=patientService.findBy_patientId(username);
         if (a != null) {
+            System.out.println("111");
             return "1";
         }
+        System.out.println("2222");
         return "2";
     }
 
@@ -67,6 +68,9 @@ public class AuthenticationController {
         if (status.equals("approved")) {
             Patient user = patientService.getUserByPhoneNumber(verify_otp_rec.mobile_number);
             String jwtToken = jwtUtils.generateToken(user.getPatientId());
+            String username=jwtUtils.extractUsername(jwtToken);
+            System.out.println(jwtToken);
+            System.out.println(username);
             return new VerifyOTPResponse(status, jwtToken, user);
 
         } else {
