@@ -1,17 +1,14 @@
-package com.example.backend.Entity;
+package com.example.backend.Patient;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
-import javax.validation.constraints.NotNull;
+
 import javax.validation.constraints.Pattern;
-import java.util.Date;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.hibernate.validator.constraints.UniqueElements;
 
 @Data

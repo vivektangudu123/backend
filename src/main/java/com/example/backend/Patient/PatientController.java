@@ -1,15 +1,13 @@
-package com.example.backend.Controller;
+package com.example.backend.Patient;
 
 
 
-import com.example.backend.Entity.Patient;
-import com.example.backend.Service.PatientService;
+import com.example.backend.authentication.UniqueIdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -49,9 +47,9 @@ public class PatientController {
     }
 
     // Endpoint to retrieve a patient by ID
-    @GetMapping("/{id}")
-    public ResponseEntity<Patient> getPatientById(@PathVariable("id") int id) {
-        Patient patient = patientService.getPatientById(id);
+    @GetMapping("/{patientId}")
+    public ResponseEntity<Patient> getPatientById(@PathVariable("patientId") String id) {
+        Patient patient = patientService.findBy_patientId(id);
         if (patient == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -59,8 +57,8 @@ public class PatientController {
     }
 
     // Endpoint to delete a patient by ID
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePatient(@PathVariable("id") int id) {
+    @DeleteMapping("/{patientId}")
+    public ResponseEntity<Void> deletePatient(@PathVariable("patientId") String id) {
 //        patientService.deletePatient(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

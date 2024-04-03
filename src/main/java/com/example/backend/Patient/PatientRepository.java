@@ -1,13 +1,14 @@
-package com.example.backend.Repo;
+package com.example.backend.Patient;
 
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
-import com.example.backend.Entity.Patient;
 
 @Repository
 public interface PatientRepository extends MongoRepository<Patient, String> {
-    // Define custom repository methods if needed
     boolean existsByphoneNumber(String phoneNumber);
     boolean existsByemail(String email);
+
+    Patient findByPhoneNumber(String phoneNumber);
+    Patient findBypatientId(String patientId);
 }

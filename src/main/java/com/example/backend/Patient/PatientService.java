@@ -1,7 +1,5 @@
-package com.example.backend.Service;
+package com.example.backend.Patient;
 
-import com.example.backend.Repo.*;
-import com.example.backend.Entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -24,9 +22,8 @@ public class PatientService {
     }
 
     // Method to retrieve a patient by ID
-    public Patient getPatientById(int id) {
-        String str1 = Integer.toString(id);
-        return patientRepository.findById(str1).orElse(null);
+    public Patient findBy_patientId(String patientId) {
+        return patientRepository.findBypatientId(patientId);
     }
 
     // Method to delete a patient by ID
@@ -40,6 +37,9 @@ public class PatientService {
     }
     public boolean isemailExists(String email) {
         return patientRepository.existsByemail(email);
+    }
+    public Patient getUserByPhoneNumber(String phoneNumber) {
+        return patientRepository.findByPhoneNumber(phoneNumber);
     }
 }
 
