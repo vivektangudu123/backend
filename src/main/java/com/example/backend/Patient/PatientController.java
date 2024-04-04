@@ -2,6 +2,7 @@ package com.example.backend.Patient;
 
 
 
+import com.example.backend.Doctor.DoctorService;
 import com.example.backend.authentication.UniqueIdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,8 @@ public class PatientController {
 
     @Autowired
     private PatientService patientService;
+    @Autowired
+    private DoctorService doctorService;
 
     // Endpoint to create a new patient
 //    @PostMapping
@@ -26,10 +29,10 @@ public class PatientController {
     @PostMapping("/create")
     public String create_patient(@RequestBody Patient npr) {
         System.out.println(npr.getPhoneNumber());
-        if(patientService.isMobileNumberExists(npr.getPhoneNumber())){
+        if(patientService.isMobileNumberExists(npr.getPhoneNumber()) || doctorService.isMobileNumberExists(npr.getPhoneNumber())){
             return "Mobile number already exsists";
         }
-        if(patientService.isemailExists(npr.getEmail()))
+        if(patientService.isemailExists(npr.getEmail()) || doctorService.isEmailExists(npr.getEmail()))
         {
             return "email already exsists";
         }

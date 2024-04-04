@@ -1,17 +1,20 @@
 package com.example.backend.authentication;
 
+import com.example.backend.Doctor.Doctor;
 import com.example.backend.Patient.Patient;
 
 public class VerifyOTPResponse {
     private String status;
     private String jwtToken;
     private Patient user;
+    private Doctor doc;
 
     // Constructors, getters, and setters
-    public VerifyOTPResponse(String status, String jwtToken, Patient user) {
+    public VerifyOTPResponse(String status, String jwtToken, Patient user,Doctor doc) {
         this.status = status;
         this.jwtToken = jwtToken;
         this.user = user;
+        this.doc=doc;
     }
 
     // Getters and setters
