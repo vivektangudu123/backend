@@ -1,5 +1,6 @@
 package com.example.backend.Record;
 
+import com.example.backend.authentication.AuthenticationController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -9,7 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -19,6 +19,9 @@ public class RecordController {
 
     @Autowired
     private RecordService recordService;
+
+    @Autowired
+    private AuthenticationController authenticationController;
 
     @PostMapping("/add")
     public ResponseEntity<String> addRecord(@RequestParam("file") MultipartFile file,
@@ -55,8 +58,13 @@ public class RecordController {
         return ResponseEntity.ok().body("Doctor added to the record successfully");
     }
 
-    @GetMapping("/all/{patientId}")
-    public ResponseEntity<List<Record>> getAllRecordsByPatientId(@PathVariable("patientId") String patientId) {
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllRecordsByPatientId(@RequestHeader("Authorization") String authorizationHeader) {
+        String jwtToken = authorizationHeader.replace("Bearer ", "");
+        String patientId=authenticationController.get_username_using_jwt(jwtToken);
+        System.out.println(patientId);
+        if(patientId.equals("1"))
+            return ResponseEntity.ok().body("1");
         List<Record> records = recordService.getAllRecordsByPatientId(patientId);
         return ResponseEntity.ok().body(records);
     }

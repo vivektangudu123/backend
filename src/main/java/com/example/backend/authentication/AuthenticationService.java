@@ -41,4 +41,5 @@ public class AuthenticationService {
         System.out.println(verificationCheck.getStatus());
         return verificationCheck.getStatus();
     }
+
 }

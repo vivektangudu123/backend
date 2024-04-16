@@ -33,7 +33,7 @@ public class DoctorController {
         return "Success";
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<Doctor>> getAllDoctors() {
         List<Doctor> doctors = doctorService.getAllDoctors();
         return new ResponseEntity<>(doctors, HttpStatus.OK);

@@ -4,10 +4,16 @@ import com.example.backend.Doctor.Doctor;
 import com.example.backend.Doctor.DoctorService;
 import com.example.backend.Patient.Patient;
 import com.example.backend.Patient.PatientService;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.backend.Patient.PatientService.*;
+
+import java.security.SignatureException;
 
 @RequestMapping(value = "/api/auth")
 @RestController
@@ -70,22 +76,13 @@ public class AuthenticationController {
     }
     @CrossOrigin
     @PostMapping("/jwt")
-    public String verify_jwt(@RequestBody String JWT) {
-//        if (!jwtUtils.isTokenExpired(JWT)) {
-//           System.out.println(" expried");
-//           return "expired";
-//        }
+    public ResponseEntity<?> verify_jwt(@RequestBody String JWT) {
         JWT = JWT.substring(1, JWT.length() - 1);
         System.out.println(JWT);
-        String username=jwtUtils.extractUsername(JWT);
+        String username=get_username_using_jwt(JWT);
 
-        Patient a=patientService.findBy_patientId(username);
-        if (a != null) {
-            System.out.println("111");
-            return "1";
-        }
-        System.out.println("2222");
-        return "2";
+        System.out.println(username);
+        return ResponseEntity.ok().body(username);
     }
 
     @CrossOrigin
@@ -128,4 +125,16 @@ public class AuthenticationController {
             return new VerifyOTPResponse("nope", null, null,null);
         }
     }
+
+    public String get_username_using_jwt(String token) {
+        try {
+            return jwtUtils.extractUsername(token);
+        } catch (ExpiredJwtException ex) {
+            return "1";
+        } catch (MalformedJwtException | UnsupportedJwtException | IllegalArgumentException e) {
+
+            return"2";
+        }
+    }
+
 }
