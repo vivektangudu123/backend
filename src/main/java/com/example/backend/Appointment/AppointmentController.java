@@ -1,9 +1,18 @@
 package com.example.backend.Appointment;
 
+import com.example.backend.authentication.AuthenticationController;
+import com.example.backend.authentication.UniqueIdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/appointments")
@@ -11,15 +20,44 @@ public class AppointmentController {
 
     @Autowired
     private AppointmentService appointmentService;
+    @Autowired
+    private AuthenticationController authenticationController;
 
     @PostMapping("/create")
-    public Appointment createAppointment(@RequestBody Appointment appointment) {
-        return appointmentService.createAppointment(appointment);
+    public ResponseEntity<?> createAppointment(@RequestParam("doctorId") String doctorId,@RequestParam("date") String date,@RequestParam("time") String time,
+                                               @RequestHeader("Authorization") String authorizationHeader) {
+        String jwtToken = authorizationHeader.replace("Bearer ", "");
+        String patientId = authenticationController.get_username_using_jwt(jwtToken);
+        System.out.println(patientId);
+
+        if (patientId.equals("1")) {
+            System.out.println("111");
+            return ResponseEntity.ok().body("1");
+        }
+
+        // Create Appointment object
+        System.out.println(date);
+        String dateTimeString = date + " " + time;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime dateTime = LocalDateTime.parse(dateTimeString, formatter);
+        String formattedDateTimeString = dateTime.format(formatter);
+        String appointmentId = UniqueIdGenerator.generateUniqueId(8);
+        Appointment appointment = new Appointment(appointmentId,patientId,doctorId,formattedDateTimeString,45,false,"");
+        appointmentService.createAppointment(appointment);
+        System.out.println(appointment.getStartTime());
+        return ResponseEntity.ok().body("Success");
     }
 
-    @GetMapping("/patient/{patientId}")
-    public List<Appointment> getAppointmentsByPatientId(@PathVariable String patientId) {
-        return appointmentService.getAppointmentsByPatientId(patientId);
+    @GetMapping("/all")
+    public ResponseEntity<?> getAppointmentsByPatientId(@RequestHeader("Authorization") String authorizationHeader) {
+        String jwtToken = authorizationHeader.replace("Bearer ", "");
+        String patientId = authenticationController.get_username_using_jwt(jwtToken);
+        System.out.println(patientId);
+
+        if (patientId.equals("1")) {
+            return ResponseEntity.ok().body("1");
+        }
+        return ResponseEntity.ok().body(appointmentService.getAppointmentsByPatientId(patientId));
     }
 
     @GetMapping("/doctor/{doctorId}")

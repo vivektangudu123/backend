@@ -18,22 +18,27 @@ public class Appointment {
     @Id
     private String appointmentId;
 
-    @NotNull
     private String patientId;
 
-    @NotNull
     private String doctorId;
 
-    @NotNull
     private String startTime;
 
-    @NotNull
     private int durationMinutes;
 
     private boolean followUp;
 
     private String recordId;
 
+    public Appointment(String appointmentId, String patientId, String doctorId, String startTime, int durationMinutes, boolean followUp, String recordId) {
+        this.appointmentId = appointmentId;
+        this.patientId = patientId;
+        this.doctorId = doctorId;
+        this.startTime = startTime;
+        this.durationMinutes = durationMinutes;
+        this.followUp = followUp;
+        this.recordId = recordId;
+    }
     // Setters and Getters
     public String getAppointmentId() {
         return appointmentId;

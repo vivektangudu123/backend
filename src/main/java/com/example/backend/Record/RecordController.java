@@ -25,8 +25,13 @@ public class RecordController {
 
     @PostMapping("/add")
     public ResponseEntity<String> addRecord(@RequestParam("file") MultipartFile file,
-                                            @RequestParam("patientId") String patientId,
+                                            @RequestHeader("Authorization") String authorizationHeader,
                                             @RequestParam("description") String description) throws IOException {
+        String jwtToken = authorizationHeader.replace("Bearer ", "");
+        String patientId=authenticationController.get_username_using_jwt(jwtToken);
+        System.out.println(patientId);
+        if(patientId.equals("1"))
+            return ResponseEntity.ok().body("1");
         recordService.addRecord(file, patientId, description);
         return ResponseEntity.status(HttpStatus.CREATED).body("Record added successfully");
     }
@@ -62,10 +67,10 @@ public class RecordController {
     public ResponseEntity<?> getAllRecordsByPatientId(@RequestHeader("Authorization") String authorizationHeader) {
         String jwtToken = authorizationHeader.replace("Bearer ", "");
         String patientId=authenticationController.get_username_using_jwt(jwtToken);
-        System.out.println(patientId);
-        if(patientId.equals("1"))
-            return ResponseEntity.ok().body("1");
+        if(patientId.equals("1")){
+            return ResponseEntity.ok().body("1");}
         List<Record> records = recordService.getAllRecordsByPatientId(patientId);
+        System.out.println(records.size());
         return ResponseEntity.ok().body(records);
     }
 }
